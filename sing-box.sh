@@ -81,7 +81,7 @@ install_singbox(){
     current_pass=$(cat /usr/local/etc/sing-box/config.json | grep password | awk '{print $2}' | awk -F '"' '{print $2}')
     read -rp "请输入 Sing-box 的连接密码 [默认随机生成]: " new_pass
     [[ -z $new_pass ]] && new_pass=$(openssl rand -base64 32)
-    sed -i "s/$current_pass/$new_pass/g" /usr/local/etc/sing-box/config.json
+    sed -i "19s/$current_pass/$new_pass/g" /usr/local/etc/sing-box/config.json
 
     cat <<EOF >/etc/systemd/system/sing-box.service
 [Unit]
@@ -146,7 +146,7 @@ change_password(){
     read -rp "请输入 Sing-box 的连接密码 [默认随机生成]: " new_pass
     [[ -z $new_pass ]] && new_pass=$(openssl rand -base64 32)
     systemctl stop sing-box
-    sed -i "s/$current_pass/$new_pass/g" /usr/local/etc/sing-box/config.json
+    sed -i "19s/$current_pass/$new_pass/g" /usr/local/etc/sing-box/config.json
     systemctl start sing-box
     green "Sing-box 连接密码更改为：${new_pass} 成功！"
     yellow "配置文件已更新，请重新在客户端导入节点或配置文件"
