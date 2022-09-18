@@ -20,8 +20,8 @@
   "outbounds": [
     {
       "type": "shadowsocks",
-      "listen": "::",
-      "listen_port": 8080,
+      "server": "::",
+      "server_port": 8080,
       "sniff": true,
       "method": "2022-blake3-aes-128-gcm",
       "password": "8JCsPssfgS8tiRwiMlhARg==",
