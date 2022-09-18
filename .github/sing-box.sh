@@ -6,13 +6,13 @@ actions_date=$(date)
 repo_last_ver=$(curl -Ls "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 repo_ver_name=$(curl -Ls "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed "s/v//g")
 
-wget -N https://github.com/SagerNet/sing-box/releases/download/$repo_last_ver/sing-box_"$repo_ver_name"_linux_amd64.deb
+wget https://github.com/SagerNet/sing-box/releases/download/$repo_last_ver/sing-box_"$repo_ver_name"_linux_amd64.deb
  -O ${GITHUB_WORKSPACE}/files/sing-box-latest-amd64.deb
-wget -N https://github.com/SagerNet/sing-box/releases/download/$repo_last_ver/sing-box_"$repo_ver_name"_linux_amd64.rpm
+wget https://github.com/SagerNet/sing-box/releases/download/$repo_last_ver/sing-box_"$repo_ver_name"_linux_amd64.rpm
  -O ${GITHUB_WORKSPACE}/files/sing-box-latest-amd64.rpm
-wget -N https://github.com/SagerNet/sing-box/releases/download/$repo_last_ver/sing-box_"$repo_ver_name"_linux_arm64.deb
+wget https://github.com/SagerNet/sing-box/releases/download/$repo_last_ver/sing-box_"$repo_ver_name"_linux_arm64.deb
  -O ${GITHUB_WORKSPACE}/files/sing-box-latest-arm64.deb
-wget -N https://github.com/SagerNet/sing-box/releases/download/$repo_last_ver/sing-box_"$repo_ver_name"_linux_amd64.rpm
+wget https://github.com/SagerNet/sing-box/releases/download/$repo_last_ver/sing-box_"$repo_ver_name"_linux_amd64.rpm
  -O ${GITHUB_WORKSPACE}/files/sing-box-latest-arm64.rpm
 
 cat <<EOF > ${GITHUB_WORKSPACE}/files/singbox-fetchlog.txt
