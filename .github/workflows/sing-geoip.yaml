@@ -1,4 +1,4 @@
-name: Fetch Sing-box latest version
+name: Fetch Sing-box Geoip and Geosite latest version
 
 on:
   workflow_dispatch:
