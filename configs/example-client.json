@@ -20,11 +20,10 @@
   "outbounds": [
     {
       "type": "shadowsocks",
-      "server": "::",
+      "server": "1.1.1.1",
       "server_port": 8080,
       "method": "2022-blake3-aes-128-gcm",
-      "password": "8JCsPssfgS8tiRwiMlhARg==",
-      "domain_strategy": "prefer_ipv4"
+      "password": "8JCsPssfgS8tiRwiMlhARg=="
     },
     {
       "type": "direct"
