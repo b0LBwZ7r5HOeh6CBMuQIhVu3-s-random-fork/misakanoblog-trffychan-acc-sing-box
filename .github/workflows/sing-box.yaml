@@ -1,4 +1,4 @@
-name: Fetch wgcf latest version
+name: Fetch Sing-box latest version
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Checking and fetching wgcf latest version
+      - name: Checking and fetching Sing-box latest version
         run: |
           wget -N https://raw.githubusercontent.com/taffychan/sing-box/main/.github/sing-box.sh
           bash sing-box.sh
