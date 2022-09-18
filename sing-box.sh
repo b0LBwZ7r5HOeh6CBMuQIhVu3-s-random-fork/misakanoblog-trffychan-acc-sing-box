@@ -86,7 +86,6 @@ EOF
     if [[ -n $(service sing-box status 2>/dev/null | grep "inactive") ]]; then
         red "Sing-box 安装失败"
     elif [[ -n $(service sing-box status 2>/dev/null | grep "active") ]]; then
-        show_usage
         green "Sing-box 安装成功"
     fi
 }
