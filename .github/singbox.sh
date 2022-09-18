@@ -17,4 +17,4 @@ Last Version: $repo_last_ver
 Fetch Date: $actions_date
 EOF
 
-rm -f sing-box.sh
+rm -f singbox.sh
