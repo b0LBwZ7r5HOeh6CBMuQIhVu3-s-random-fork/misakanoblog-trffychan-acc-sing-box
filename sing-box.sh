@@ -74,13 +74,15 @@ WantedBy=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=sing-box run -c /usr/local/etc/sing-box/config.json
+ExecStart=/usr/bin/sing-box run -c /usr/local/etc/sing-box/config.json
 Restart=on-failure
 RestartSec=30s
 RestartPreventExitStatus=23
 LimitNPROC=10000
 LimitNOFILE=1000000
 EOF
+    systemctl start sing-box
+    systemctl enable sing-box
     if [[ -n $(service sing-box status 2>/dev/null | grep "inactive") ]]; then
         red "Sing-box 安装失败"
     elif [[ -n $(service sing-box status 2>/dev/null | grep "active") ]]; then
