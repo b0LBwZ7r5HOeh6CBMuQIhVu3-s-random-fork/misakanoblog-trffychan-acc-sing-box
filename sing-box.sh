@@ -60,8 +60,10 @@ install_singbox(){
         dpkg -i sing-box-latest-$(archAffix).deb
         rm -f sing-box-latest-$(archAffix).deb
     fi
+
     mkdir /usr/local/etc/sing-box
     wget --no-check-certificate -O /usr/local/etc/sing-box/config.json https://raw.githubusercontent.com/SagerNet/sing-box/main/release/config/config.json
+
     cat <<EOF >/etc/systemd/system/sing-box.service
 [Unit]
 Description=sing-box Service
@@ -83,6 +85,7 @@ LimitNOFILE=1000000
 EOF
     systemctl start sing-box
     systemctl enable sing-box
+    
     if [[ -n $(service sing-box status 2>/dev/null | grep "inactive") ]]; then
         red "Sing-box 安装失败"
     elif [[ -n $(service sing-box status 2>/dev/null | grep "active") ]]; then
