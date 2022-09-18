@@ -118,7 +118,18 @@ change_port(){
     systemctl stop sing-box
     sed -i "s/$current_port/$new_port/g" /usr/local/etc/sing-box/config.json
     systemctl start sing-box
-    green "Sing-box 端口更改为：${new_port} 成功！"
+    green "Sing-box 连接端口更改为：${new_port} 成功！"
+    yellow "配置文件已更新，请重新在客户端导入节点或配置文件"
+}
+
+change_password(){
+    current_pass=$(cat /usr/local/etc/sing-box/config.json | grep password | awk '{print $2}' | awk -F '"' '{print $2}')
+    read -rp "请输入 Sing-box 的连接密码 [默认随机生成]: " new_pass
+    [[ -z $new_pass ]] && new_pass=$(openssl rand -base64 32)
+    systemctl stop sing-box
+    sed -i "s/$current_pass/$new_pass/g" /usr/local/etc/sing-box/config.json
+    systemctl start sing-box
+    green "Sing-box 连接密码更改为：${new_pass} 成功！"
     yellow "配置文件已更新，请重新在客户端导入节点或配置文件"
 }
 
@@ -134,14 +145,16 @@ menu(){
     echo -e " ${GREEN}2.${PLAIN} ${RED}卸载 Sing-box${PLAIN}"
     echo " -------------"
     echo -e " ${GREEN}3.${PLAIN} 修改 Sing-box 连接端口"
+    echo -e " ${GREEN}4.${PLAIN} 修改 Sing-box 连接密码"
     echo " -------------"
     echo -e " ${GREEN}0.${PLAIN} 退出"
     echo ""
-    read -rp "请输入选项 [0-2]：" menuChoice
+    read -rp "请输入选项 [0-4]：" menuChoice
     case $menuChoice in
         1) install_singbox ;;
         2) uninstall_singbox ;;
         3) change_port ;;
+        4) change_password ;;
         *) exit 1 ;;
     esac
 }
