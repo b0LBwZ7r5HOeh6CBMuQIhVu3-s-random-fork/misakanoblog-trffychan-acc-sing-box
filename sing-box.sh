@@ -102,6 +102,26 @@ uninstall_singbox(){
     green "Sing-box 已彻底卸载完成"
 }
 
+change_port(){
+    current_port=$(cat /usr/local/etc/sing-box/config.json | grep listen_port | awk '{print $2}' | awk -F ',' '{print $1}')
+    read -rp "请输入 Sing-box 的连接端口 [默认随机生成]: " new_port
+    [[ -z $new_port ]] && new_port=$(shuf -i 1000-65535 -n 1)
+    if [[ -n $(ss -ntlp | awk '{print $4}' | grep -w "$new_port") ]]; then
+        until [[ -z $(ss -ntlp | awk '{print $4}' | grep -w "$new_port") ]]; do
+            if [[ -n $(ss -ntlp | awk '{print $4}' | grep -w "$new_port") ]]; then
+                yellow "你设置的端口目前已被其他程序占用，请重新设置一个新的端口"
+                read -rp "请输入 Sing-box 的连接端口 [默认随机生成]: " new_port
+                [[ -z $new_port ]] && new_port=$(shuf -i 1000-65535 -n 1)
+            fi
+        done
+    fi
+    systectl stop sing-box
+    sed -i "s/$current_port/$new_port/g" /usr/local/etc/sing-box/config.json
+    systemctl start sing-box
+    green "Sing-box 端口更改为：${new_port} 成功！"
+    yellow "配置文件已更新，请重新在客户端导入节点或配置文件"
+}
+
 menu(){
     clear
     echo "#############################################################"
@@ -113,12 +133,15 @@ menu(){
     echo -e " ${GREEN}1.${PLAIN} 安装 Sing-box"
     echo -e " ${GREEN}2.${PLAIN} ${RED}卸载 Sing-box${PLAIN}"
     echo " -------------"
+    echo -e " ${GREEN}3.${PLAIN} 修改 Sing-box 连接端口"
+    echo " -------------"
     echo -e " ${GREEN}0.${PLAIN} 退出"
     echo ""
     read -rp "请输入选项 [0-2]：" menuChoice
     case $menuChoice in
         1) install_singbox ;;
         2) uninstall_singbox ;;
+        3) change_port ;;
         *) exit 1 ;;
     esac
 }
