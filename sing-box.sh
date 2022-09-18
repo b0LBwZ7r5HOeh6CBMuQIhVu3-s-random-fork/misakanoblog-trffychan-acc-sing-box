@@ -115,7 +115,7 @@ change_port(){
             fi
         done
     fi
-    systectl stop sing-box
+    systemctl stop sing-box
     sed -i "s/$current_port/$new_port/g" /usr/local/etc/sing-box/config.json
     systemctl start sing-box
     green "Sing-box 端口更改为：${new_port} 成功！"
