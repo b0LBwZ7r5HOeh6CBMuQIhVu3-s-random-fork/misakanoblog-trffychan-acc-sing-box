@@ -64,6 +64,25 @@ install_singbox(){
     mkdir /usr/local/etc/sing-box
     wget --no-check-certificate -O /usr/local/etc/sing-box/config.json https://raw.githubusercontent.com/SagerNet/sing-box/main/release/config/config.json
 
+    current_port=$(cat /usr/local/etc/sing-box/config.json | grep listen_port | awk '{print $2}' | awk -F ',' '{print $1}')
+    read -rp "请输入 Sing-box 的连接端口 [默认随机生成]: " new_port
+    [[ -z $new_port ]] && new_port=$(shuf -i 1000-65535 -n 1)
+    if [[ -n $(ss -ntlp | awk '{print $4}' | grep -w "$new_port") ]]; then
+        until [[ -z $(ss -ntlp | awk '{print $4}' | grep -w "$new_port") ]]; do
+            if [[ -n $(ss -ntlp | awk '{print $4}' | grep -w "$new_port") ]]; then
+                yellow "你设置的端口目前已被其他程序占用，请重新设置一个新的端口"
+                read -rp "请输入 Sing-box 的连接端口 [默认随机生成]: " new_port
+                [[ -z $new_port ]] && new_port=$(shuf -i 1000-65535 -n 1)
+            fi
+        done
+    fi
+    sed -i "s/$current_port/$new_port/g" /usr/local/etc/sing-box/config.json
+
+    current_pass=$(cat /usr/local/etc/sing-box/config.json | grep password | awk '{print $2}' | awk -F '"' '{print $2}')
+    read -rp "请输入 Sing-box 的连接密码 [默认随机生成]: " new_pass
+    [[ -z $new_pass ]] && new_pass=$(openssl rand -base64 32)
+    sed -i "s/$current_pass/$new_pass/g" /usr/local/etc/sing-box/config.json
+
     cat <<EOF >/etc/systemd/system/sing-box.service
 [Unit]
 Description=sing-box Service
