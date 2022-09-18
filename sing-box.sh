@@ -85,7 +85,7 @@ LimitNOFILE=1000000
 EOF
     systemctl start sing-box
     systemctl enable sing-box
-    
+
     if [[ -n $(service sing-box status 2>/dev/null | grep "inactive") ]]; then
         red "Sing-box 安装失败"
     elif [[ -n $(service sing-box status 2>/dev/null | grep "active") ]]; then
@@ -96,7 +96,8 @@ EOF
 uninstall_singbox(){
     systemctl stop sing-box
     systemctl disable sing-box
-    rm -f /etc/systemd/system/sing-box.service /usr/local/etc/sing-box/config.json
+    rm -f /etc/systemd/system/sing-box.service
+    rm -rf /usr/local/etc/sing-box
     ${PACKAGE_UNINSTALL} sing-box
     green "Sing-box 已彻底卸载完成"
 }
