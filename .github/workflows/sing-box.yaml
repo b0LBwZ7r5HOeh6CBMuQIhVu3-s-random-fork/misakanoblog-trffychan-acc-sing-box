@@ -1,0 +1,30 @@
+name: Fetch wgcf latest version
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 12 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Checking and fetching wgcf latest version
+        run: |
+          wget -N https://raw.githubusercontent.com/taffychan/sing-box/main/.github/sing-box.sh
+          bash sing-box.sh
+      - name: Git uploading
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add .
+          git commit -m "Uploaded by Github Actions, Date: $(date)"
+          git push
+      - name: Refreshing Jsdelivr
+        run: |
+          curl https://purge.jsdelivr.net/gh/taffychan/sing-box/files/sing-box-latest-amd64.deb
+          curl https://purge.jsdelivr.net/gh/taffychan/sing-box/files/sing-box-latest-arm64.deb
+          curl https://purge.jsdelivr.net/gh/taffychan/sing-box/files/sing-box-latest-amd64.rpm
+          curl https://purge.jsdelivr.net/gh/taffychan/sing-box/files/sing-box-latest-arm64.rpm
