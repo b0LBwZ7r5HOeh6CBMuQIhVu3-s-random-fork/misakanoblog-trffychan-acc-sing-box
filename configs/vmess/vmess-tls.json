@@ -11,13 +11,24 @@
     },
     "inbounds": [
       {
-        "type": "shadowsocks",
+        "type": "vmess",
         "listen": "::",
         "listen_port": 8080,
         "sniff": true,
-        "method": "2022-blake3-aes-128-gcm",
-        "password": "8JCsPssfgS8tiRwiMlhARg==",
-        "domain_strategy": "prefer_ipv4",
+        "users": [
+          {
+            "name": "sing-box",
+            "uuid": "bf000d23-0752-40b4-affe-68f7707a9661",
+            "alterId": 0
+          }
+        ],
+        "tls": {
+          "enabled": true,
+          "server_name": "",
+          "certificate_path": "",
+          "key_path": ""
+        },
+        "domain_strategy": "prefer_ipv4"
       }
     ],
     "outbounds": [
