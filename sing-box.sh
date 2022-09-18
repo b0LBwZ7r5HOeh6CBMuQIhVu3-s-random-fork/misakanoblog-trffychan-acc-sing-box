@@ -52,11 +52,11 @@ archAffix(){
 
 install_singbox(){
     if [[ $SYSTEM == "CentOS" ]]; then
-        wget -N https://cdn.jsdelivr.net/gh/taffychan/sing-box/files/sing-box-latest-$(archAffix).rpm
+        wget -N --no-check-certificate https://cdn.jsdelivr.net/gh/taffychan/sing-box/files/sing-box-latest-$(archAffix).rpm
         rpm -i sing-box-latest-$(archAffix).rpm
         rm -f sing-box-latest-$(archAffix).rpm
     else
-        wget -N https://cdn.jsdelivr.net/gh/taffychan/sing-box/files/sing-box-latest-$(archAffix).deb
+        wget -N --no-check-certificate https://cdn.jsdelivr.net/gh/taffychan/sing-box/files/sing-box-latest-$(archAffix).deb
         dpkg -i sing-box-latest-$(archAffix).deb
         rm -f sing-box-latest-$(archAffix).deb
     fi
