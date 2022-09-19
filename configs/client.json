@@ -36,7 +36,7 @@
       {
           "type": "shadowsocks",
           "tag": "shadowsocks-out",
-          "server": "servername.com",
+          "server": "1.1.1.1",
           "server_port": 54126,
           "method": "2022-blake3-aes-128-gcm",
           "password": "8JCsPssfgS8tiRwiMlhARg=="
