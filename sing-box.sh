@@ -65,16 +65,18 @@ install_singbox(){
     wget --no-check-certificate -O /etc/sing-box/config.json https://raw.githubusercontent.com/taffychan/sing-box/main/configs/server.json
     
     mkdir /root/sing-box
-    wget --no-check-certificate -O /root/client-sockshttp.json https://raw.githubusercontent.com/taffychan/sing-box/main/configs/client-sockshttp.json
-    wget --no-check-certificate -O /root/client-tun.json https://raw.githubusercontent.com/taffychan/sing-box/main/configs/client-tun.json
+    wget --no-check-certificate -O /root/sing-box/client-sockshttp.json https://raw.githubusercontent.com/taffychan/sing-box/main/configs/client-sockshttp.json
+    wget --no-check-certificate -O /root/sing-box/client-tun.json https://raw.githubusercontent.com/taffychan/sing-box/main/configs/client-tun.json
     
     v6=$(curl -s6m8 ip.p3terx.com -k | sed -n 1p)
     v4=$(curl -s4m8 ip.p3terx.com -k | sed -n 1p)
     
     if [[ -n $v4 ]]; then
-        sed -i "s/填写服务器ip地址/$v4/g" /etc/sing-box/config.json
+        sed -i "s/填写服务器ip地址/$v4/g" /root/sing-box/client-sockshttp.json
+        sed -i "s/填写服务器ip地址/$v4/g" /root/sing-box/client-tun.json
     elif [[ -n $v6 ]]; then
-        sed -i "s/填写服务器ip地址/$v6/g" /etc/sing-box/config.json
+        sed -i "s/填写服务器ip地址/$v6/g" /root/sing-box/client-sockshttp.json
+        sed -i "s/填写服务器ip地址/$v6/g" /root/sing-box/client-tun.json
     fi
     
     systemctl start sing-box
@@ -103,6 +105,8 @@ change_password(){
     [[ -z $new_pass ]] && new_pass=$(openssl rand -base64 32)
     systemctl stop sing-box
     sed -i "s/$current_pass/$new_pass/g" /etc/sing-box/config.json
+    sed -i "s/$current_pass/$new_pass/g" /root/sing-box/client-sockshttp.json
+    sed -i "s/$current_pass/$new_pass/g" /root/sing-box/client-tun.json
     systemctl start sing-box
     green "Sing-box 连接密码更改为：${new_pass} 成功！"
     yellow "配置文件已更新，请重新在客户端导入节点或配置文件"
