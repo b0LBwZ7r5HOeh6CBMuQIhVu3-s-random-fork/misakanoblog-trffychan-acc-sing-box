@@ -64,6 +64,19 @@ install_singbox(){
     rm -f /etc/sing-box/config.json
     wget --no-check-certificate -O /etc/sing-box/config.json https://raw.githubusercontent.com/taffychan/sing-box/main/configs/server.json
     
+    mkdir /root/sing-box
+    wget --no-check-certificate -O /root/client-sockshttp.json https://raw.githubusercontent.com/taffychan/sing-box/main/configs/client-sockshttp.json
+    wget --no-check-certificate -O /root/client-tun.json https://raw.githubusercontent.com/taffychan/sing-box/main/configs/client-tun.json
+    
+    v6=$(curl -s6m8 ip.p3terx.com -k | sed -n 1p)
+    v4=$(curl -s4m8 ip.p3terx.com -k | sed -n 1p)
+    
+    if [[ -n $v4 ]]; then
+        sed -i "s/填写服务器ip地址/$v4/g" /etc/sing-box/config.json
+    elif [[ -n $v6 ]]; then
+        sed -i "s/填写服务器ip地址/$v6/g" /etc/sing-box/config.json
+    fi
+    
     systemctl start sing-box
     systemctl enable sing-box
 
@@ -71,22 +84,25 @@ install_singbox(){
         red "Sing-box 安装失败"
     elif [[ -n $(service sing-box status 2>/dev/null | grep "active") ]]; then
         green "Sing-box 安装成功"
+        yellow "客户端Socks / HTTP代理模式配置文件已保存到 /root/sing-box/client-sockshttp.json"
+        yellow "客户端TUN模式配置文件已保存到 /root/sing-box/client-tun.json"
     fi
 }
 
 uninstall_singbox(){
     systemctl stop sing-box
     systemctl disable sing-box
+    rm -rf /root/sing-box
     ${PACKAGE_UNINSTALL} sing-box
     green "Sing-box 已彻底卸载完成"
 }
 
 change_password(){
-    current_pass=$(cat /usr/local/etc/sing-box/config.json | grep password | awk '{print $2}' | awk -F '"' '{print $2}')
+    current_pass=$(cat /etc/sing-box/config.json | grep password | awk '{print $2}' | awk -F '"' '{print $2}')
     read -rp "请输入 Sing-box 的连接密码 [默认随机生成]: " new_pass
     [[ -z $new_pass ]] && new_pass=$(openssl rand -base64 32)
     systemctl stop sing-box
-    sed -i "s/$current_pass/$new_pass/g" /usr/local/etc/sing-box/config.json
+    sed -i "s/$current_pass/$new_pass/g" /etc/sing-box/config.json
     systemctl start sing-box
     green "Sing-box 连接密码更改为：${new_pass} 成功！"
     yellow "配置文件已更新，请重新在客户端导入节点或配置文件"
