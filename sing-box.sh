@@ -84,9 +84,9 @@ install_singbox(){
     read -rp "请输入 Sing-box 的连接密码 [默认随机生成]: " new_pass
     [[ -z $new_pass ]] && new_pass=$(openssl rand -base64 32)
     systemctl stop sing-box
-    sed -i "s/$current_pass/$new_pass/g" /etc/sing-box/config.json
-    sed -i "s/$current_pass/$new_pass/g" /root/sing-box/client-sockshttp.json
-    sed -i "s/$current_pass/$new_pass/g" /root/sing-box/client-tun.json
+    sed -i "17s/$current_pass/$new_pass/g" /etc/sing-box/config.json
+    sed -i "14s/$current_pass/$new_pass/g" /root/sing-box/client-sockshttp.json
+    sed -i "34s/$current_pass/$new_pass/g" /root/sing-box/client-tun.json
     
     systemctl start sing-box
     systemctl enable sing-box
@@ -113,9 +113,9 @@ change_password(){
     read -rp "请输入 Sing-box 的连接密码 [默认随机生成]: " new_pass
     [[ -z $new_pass ]] && new_pass=$(openssl rand -base64 32)
     systemctl stop sing-box
-    sed -i "s/$current_pass/$new_pass/g" /etc/sing-box/config.json
-    sed -i "s/$current_pass/$new_pass/g" /root/sing-box/client-sockshttp.json
-    sed -i "s/$current_pass/$new_pass/g" /root/sing-box/client-tun.json
+    sed -i "17s/$current_pass/$new_pass/g" /etc/sing-box/config.json
+    sed -i "14s/$current_pass/$new_pass/g" /root/sing-box/client-sockshttp.json
+    sed -i "34s/$current_pass/$new_pass/g" /root/sing-box/client-tun.json
     systemctl start sing-box
     green "Sing-box 连接密码更改为：${new_pass} 成功！"
     yellow "配置文件已更新，请重新在客户端导入节点或配置文件"
