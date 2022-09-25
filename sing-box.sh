@@ -82,7 +82,7 @@ install_singbox(){
     current_pass=$(cat /etc/sing-box/config.json | grep password | awk '{print $2}' | awk -F '"' '{print $2}')
     yellow "为了确保连接安全性，故第一次安装需要设置Sing-box的连接密码"
     read -rp "请输入 Sing-box 的连接密码 [默认随机生成]: " new_pass
-    [[ -z $new_pass ]] && new_pass=$(openssl rand -base64 32)
+    [[ -z $new_pass ]] && new_pass=$(date +%s%N | md5sum | cut -c 1-16)
     systemctl stop sing-box
     sed -i "17s/$current_pass/$new_pass/g" /etc/sing-box/config.json
     sed -i "14s/$current_pass/$new_pass/g" /root/sing-box/client-sockshttp.json
@@ -111,7 +111,7 @@ uninstall_singbox(){
 change_password(){
     current_pass=$(cat /etc/sing-box/config.json | grep password | awk '{print $2}' | awk -F '"' '{print $2}')
     read -rp "请输入 Sing-box 的连接密码 [默认随机生成]: " new_pass
-    [[ -z $new_pass ]] && new_pass=$(openssl rand -base64 32)
+    [[ -z $new_pass ]] && new_pass=$(date +%s%N | md5sum | cut -c 1-16)
     systemctl stop sing-box
     sed -i "17s/$current_pass/$new_pass/g" /etc/sing-box/config.json
     sed -i "14s/$current_pass/$new_pass/g" /root/sing-box/client-sockshttp.json
