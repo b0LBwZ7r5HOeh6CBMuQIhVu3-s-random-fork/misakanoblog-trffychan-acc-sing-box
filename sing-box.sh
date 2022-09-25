@@ -61,28 +61,9 @@ install_singbox(){
         rm -f sing-box-latest-$(archAffix).deb
     fi
 
-    mkdir /usr/local/etc/sing-box
-    wget --no-check-certificate -O /usr/local/etc/sing-box/config.json https://raw.githubusercontent.com/taffychan/sing-box/main/configs/server.json
-
-    cat <<EOF >/etc/systemd/system/sing-box.service
-[Unit]
-Description=sing-box Service
-Documentation=https://sing-box.sagernet.org/
-After=network.target nss-lookup.target
-Wants=network.target
-
-[Install]
-WantedBy=multi-user.target
-
-[Service]
-Type=simple
-ExecStart=/usr/bin/sing-box run -c /usr/local/etc/sing-box/config.json
-Restart=on-failure
-RestartSec=30s
-RestartPreventExitStatus=23
-LimitNPROC=10000
-LimitNOFILE=1000000
-EOF
+    rm -f /etc/sing-box/config.json
+    wget --no-check-certificate -O /etc/sing-box/config.json https://raw.githubusercontent.com/taffychan/sing-box/main/configs/server.json
+    
     systemctl start sing-box
     systemctl enable sing-box
 
