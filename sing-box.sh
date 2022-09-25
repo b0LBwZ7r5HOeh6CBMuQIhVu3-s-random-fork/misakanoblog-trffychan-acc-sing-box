@@ -109,7 +109,7 @@ menu(){
     echo " -------------"
     echo -e " ${GREEN}0.${PLAIN} 退出"
     echo ""
-    read -rp "请输入选项 [0-4]：" menuChoice
+    read -rp "请输入选项 [0-3]：" menuChoice
     case $menuChoice in
         1) install_singbox ;;
         2) uninstall_singbox ;;
