@@ -92,6 +92,21 @@ change_password(){
     yellow "配置文件已更新，请重新在客户端导入节点或配置文件"
 }
 
+start_singbox() {
+    systemctl start sing-box
+    green "Sing-box 已启动！"
+}
+
+stop_singbox() {
+    systemctl stop sing-box
+    green "Sing-box 已停止！"
+}
+
+restart_singbox(){
+    systemctl restart sing-box
+    green "Sing-box 已重启！"
+}
+
 menu(){
     clear
     echo "#############################################################"
@@ -105,13 +120,20 @@ menu(){
     echo " -------------"
     echo -e " ${GREEN}3.${PLAIN} 修改 Sing-box 连接密码"
     echo " -------------"
+    echo -e " ${GREEN}4.${PLAIN}  启动 Sing-box"
+    echo -e " ${GREEN}5.${PLAIN}  重启 Sing-box"
+    echo -e " ${GREEN}6.${PLAIN}  停止 Sing-box"
+    echo " -------------"
     echo -e " ${GREEN}0.${PLAIN} 退出"
     echo ""
-    read -rp "请输入选项 [0-3]：" menuChoice
+    read -rp "请输入选项 [0-6]：" menuChoice
     case $menuChoice in
         1) install_singbox ;;
         2) uninstall_singbox ;;
         3) change_password ;;
+        4) start_singbox ;;
+        5) restart_singbox ;;
+        6) stop_singbox ;;
         *) exit 1 ;;
     esac
 }
