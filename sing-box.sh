@@ -77,8 +77,6 @@ install_singbox(){
 uninstall_singbox(){
     systemctl stop sing-box
     systemctl disable sing-box
-    rm -f /etc/systemd/system/sing-box.service
-    rm -rf /usr/local/etc/sing-box
     ${PACKAGE_UNINSTALL} sing-box
     green "Sing-box 已彻底卸载完成"
 }
