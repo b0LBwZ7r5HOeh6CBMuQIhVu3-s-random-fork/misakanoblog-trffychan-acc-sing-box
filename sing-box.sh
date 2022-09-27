@@ -99,19 +99,6 @@ uninstall_singbox(){
     green "Sing-box 已彻底卸载完成"
 }
 
-change_password(){
-    current_pass=$(cat /etc/sing-box/config.json | grep password | awk '{print $2}' | awk -F '"' '{print $2}')
-    read -rp "请输入 Sing-box 的连接密码 [默认随机生成]: " new_pass
-    [[ -z $new_pass ]] && new_pass=$(date +%s%N | md5sum | cut -c 1-16)
-    systemctl stop sing-box
-    sed -i "17s/$current_pass/$new_pass/g" /etc/sing-box/config.json
-    sed -i "14s/$current_pass/$new_pass/g" /root/sing-box/client-sockshttp.json
-    sed -i "34s/$current_pass/$new_pass/g" /root/sing-box/client-tun.json
-    systemctl start sing-box
-    green "Sing-box 连接密码更改为：${new_pass} 成功！"
-    yellow "配置文件已更新，请重新在客户端导入节点或配置文件"
-}
-
 start_singbox() {
     systemctl start sing-box
     green "Sing-box 已启动！"
@@ -138,22 +125,19 @@ menu(){
     echo -e " ${GREEN}1.${PLAIN} 安装 Sing-box"
     echo -e " ${GREEN}2.${PLAIN} ${RED}卸载 Sing-box${PLAIN}"
     echo " -------------"
-    echo -e " ${GREEN}3.${PLAIN} 修改 Sing-box 连接密码"
-    echo " -------------"
-    echo -e " ${GREEN}4.${PLAIN} 启动 Sing-box"
-    echo -e " ${GREEN}5.${PLAIN} 重启 Sing-box"
-    echo -e " ${GREEN}6.${PLAIN} 停止 Sing-box"
+    echo -e " ${GREEN}3.${PLAIN} 启动 Sing-box"
+    echo -e " ${GREEN}4.${PLAIN} 重启 Sing-box"
+    echo -e " ${GREEN}5.${PLAIN} 停止 Sing-box"
     echo " -------------"
     echo -e " ${GREEN}0.${PLAIN} 退出"
     echo ""
-    read -rp "请输入选项 [0-6]：" menuChoice
+    read -rp "请输入选项 [0-5]：" menuChoice
     case $menuChoice in
         1) install_singbox ;;
         2) uninstall_singbox ;;
-        3) change_password ;;
-        4) start_singbox ;;
-        5) restart_singbox ;;
-        6) stop_singbox ;;
+        3) start_singbox ;;
+        4) restart_singbox ;;
+        5) stop_singbox ;;
         *) exit 1 ;;
     esac
 }
