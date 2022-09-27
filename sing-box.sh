@@ -72,11 +72,11 @@ install_singbox(){
     v4=$(curl -s4m8 api64.ipify.org -k)
     
     if [[ -n $v4 ]]; then
-        sed -i "s/填写服务器ip地址/$v4/g" /root/sing-box/client-sockshttp.json
-        sed -i "s/填写服务器ip地址/$v4/g" /root/sing-box/client-tun.json
+        sed -i "s/填写服务器ip地址/${v4}/g" /root/sing-box/client-sockshttp.json
+        sed -i "s/填写服务器ip地址/${v4}/g" /root/sing-box/client-tun.json
     elif [[ -n $v6 ]]; then
-        sed -i "s/填写服务器ip地址/$v6/g" /root/sing-box/client-sockshttp.json
-        sed -i "s/填写服务器ip地址/$v6/g" /root/sing-box/client-tun.json
+        sed -i "s/填写服务器ip地址/[${v6}]/g" /root/sing-box/client-sockshttp.json
+        sed -i "s/填写服务器ip地址/[${v6}]/g" /root/sing-box/client-tun.json
     fi
     
     systemctl start sing-box
